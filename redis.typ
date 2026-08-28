@@ -206,7 +206,9 @@
 )
 
 #slide(title: "Infrastructure")[
-  #columns(
+    #grid(
+    columns: (1fr, 1.5fr),
+    gutter: 1em,
     [
     - APIHandler
       - Recieves Live Info from the Storm Probe
@@ -219,8 +221,12 @@
       - Pub Sub!
     ],
     [
-      #align(center)[#image("images/screenshots/pubsub0.png", fit: "stretch", width: 115%)]
-    ]
+    #place(
+      horizon + center,
+      dy: -0.5cm,  
+      image("images/screenshots/pubsub0.png", fit: "contain", width: 100%)
+    )
+    ],
   )
 ]
 
