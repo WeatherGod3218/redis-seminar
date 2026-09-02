@@ -356,6 +356,106 @@
 ]
 
 
+#slide(title: "Starting with Token Bucket")[
+  #grid(
+    columns: (1fr, 1.5fr),
+    gutter: 1em,
+    [
+      - Start with a fixed number of tokens
+      - Each request removes one.
+      - After a certain duration, drop a new token into the bucket.
+      - If there is no tokens in the bucket, deny the request.
+    ],
+    [
+    #place(
+      top + center,
+      dy: -2.75cm,  
+      image("images/BucketAxolotl.webp", fit: "contain", height: 85%, width: 95%)
+    )
+    ],
+  )
+]
+
+#slide(title: "Uh Oh! Race Conditions!")[
+  #grid(
+    columns: (1fr, 1.5fr),
+    gutter: 1em,
+    [
+      - What happens if two different requests try to update it at the same time?
+      - Race Condition!
+      - Entire operation needs to be atomic.
+        - Atomic: Everything happens at once, meaning no race conditions.
+      - Luckily, we can do this with .lua scripts!
+    ],
+    [
+    #place(
+      top + center,
+      dy: -3cm,  
+      image("images/shocked-black.gif", fit: "contain", height: 85%, width: 75%)
+    )
+    ],
+  )
+]
+
+#slide(title: "Making our Token Bucket")[
+  #grid(
+    columns: (1fr, 1.5fr),
+    gutter: 1em,
+    [
+      - Firstly, we have to make our token bucket object
+      - Each Token Bucket will have a redis connection, a recharge rate, and the amount of tokens it can hold at once.
+
+    ],
+    [
+    #place(
+      top + center,
+      dy: -2.75cm,  
+      image("images/screenshots/ratelimit/ratelimit1.png", fit: "contain", height: 85%, width: 105%)
+    )
+    ],
+  )
+]
+
+
+#slide(title: "Creating a Lua Script")[
+  #grid(
+    columns: (1fr, 1.5fr),
+    gutter: 1em,
+    [
+      - Lua script runs all operations at once.
+      - Able to set local variables, just like standard .lua Scripting
+      - Can pass arguments into the script.
+      - Can also use all redis commands inside the script!
+      - Returns back to the scripts call site.
+    ],
+    [
+    #place(
+      top + center,
+      dy: -2.75cm,  
+      image("images/screenshots/ratelimit/ratelimit0.png", fit: "contain", height: 85%, width: 95%)
+    )
+    ],
+  )
+]
+
+#slide(title: "Attaching Our Middleware")[
+  #grid(
+    columns: (1fr, 3fr),
+    gutter: 1em,
+    [
+      - Using the Gin framework in go, we can attach a middleware.
+      - We calculate the difference in time to generate tokens.
+      - Determine if the user is allowed to pass or not.
+    ],
+    [
+    #place(
+      top + center,
+      dy: -2.5cm,  
+      image("images/screenshots/ratelimit/ratelimit2.png", fit: "stretch", height: 85%, width: 92%)
+    )
+    ],
+  )
+]
 
 #focus-slide(
   [Thank you for listening! Any questions?],
